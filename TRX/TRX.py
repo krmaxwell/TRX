@@ -106,13 +106,7 @@ class MaltegoEntity(object):
 
 
 class MaltegoTransform(object):
-    # We were lazy to use a proper XML library to generate
-    # our XML. Thus - encode data before you insert!
-    # ..Sorry - RT
-
-    entities = []
-    exceptions = []
-    UIMessages = []
+    # TODO: replace with programmatic XML generation
 
     def __init__(self):
         self.entities = []
@@ -156,8 +150,7 @@ class MaltegoTransform(object):
         r += "<UIMessages>"
         for i in range(len(self.UIMessages)):
             r += "<UIMessage MessageType=\"" + \
-                self.UIMessages[i][0] + "\">" + self.UIMessages[
-                    i][1] + "</UIMessage>"
+                self.UIMessages[i][0] + "\">" + self.UIMessages[i][1] + "</UIMessage>"
         r += "</UIMessages>"
 
         r += "</MaltegoTransformResponseMessage>"
@@ -222,13 +215,13 @@ class MaltegoMsg:
         return node.getElementsByTagName(Tag)[0].attributes[Attribute].value
 
     def getProperty(self, skey):
-        if skey in self.Properties.keys():
+        if skey in self.Properties:
             return self.Properties[skey]
         else:
             return None
 
     def getTransformSetting(self, skey):
-        if skey in self.TransformSettings.keys():
+        if skey in self.TransformSettings:
             return self.TransformSettings[skey]
         else:
             return None
