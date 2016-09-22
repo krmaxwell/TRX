@@ -1,4 +1,3 @@
-import sys
 from xml.dom import minidom
 
 BOOKMARK_COLOR_NONE = "-1"
@@ -23,7 +22,7 @@ class MaltegoEntity(object):
     value = ""
     weight = 100
     displayInformation = []
-    additionalFields = []
+    additionalFields = {}
     iconURL = ""
     entityType = "Phrase"
 
@@ -32,7 +31,7 @@ class MaltegoEntity(object):
             self.entityType = eT
         if (v is not None):
             self.value = v
-        self.additionalFields = []
+        self.additionalFields = {}
         self.weight = 100
         self.displayInformation = []
         self.iconURL = ""
@@ -54,7 +53,10 @@ class MaltegoEntity(object):
             self.displayInformation.append([dl, di])
 
     def addProperty(self, fieldName=None, displayName=None, matchingRule=False, value=None):
-        self.additionalFields.append([fieldName, displayName, matchingRule, value])
+        self.additionalFields[fieldName] = {}
+        self.additionalFields[fieldName]['displayName'] = displayName
+        self.additionalFields[fieldName]['matchingRule'] = matchingRule
+        self.additionalFields[fieldName]['value'] = value
 
     def setIconURL(self, iU=None):
         if (iU is not None):
@@ -79,6 +81,7 @@ class MaltegoEntity(object):
         self.addProperty('notes#', 'Notes', '', note)
 
     def returnEntity(self):
+        # TODO: replace with programmatic XML generation
         r = ''
         r += "<Entity Type=\"" + str(self.entityType) + "\">"
         r += "<Value>" + str(self.value) + "</Value>"
@@ -90,9 +93,9 @@ class MaltegoEntity(object):
             r += '</DisplayInformation>'
         if (len(self.additionalFields) > 0):
             r += "<AdditionalFields>"
-            for i in range(len(self.additionalFields)):
-                if (str(self.additionalFields[i][2]) <> "strict"):
-                    r += "<Field Name=\"" + str(self.additionalFields[i][0]) + "\" DisplayName=\"" + str(self.additionalFields[i][1]) + "\">" + str(self.additionalFields[i][3]) + "</Field>"
+            for field in self.additionalFields:
+                if (str(field['matchingRule']) != "strict"):
+                    r += "<Field Name=\"" + str(field) + "\" DisplayName=\"" + str(field['displayName']) + "\">" + str(field['value']) + "</Field>"
                 else:
                     r += "<Field MatchingRule=\"" + str(self.additionalFields[i][2]) + "\" Name=\"" + str(self.additionalFields[i][0]) + "\" DisplayName=\"" + str(self.additionalFields[i][1]) + "\">" + str(self.additionalFields[i][3]) + "</Field>"
             r += "</AdditionalFields>"
@@ -103,9 +106,9 @@ class MaltegoEntity(object):
 
 
 class MaltegoTransform(object):
-# We were lazy to use a proper XML library to generate
-# our XML. Thus - encode data before you insert!
-# ..Sorry - RT
+    # We were lazy to use a proper XML library to generate
+    # our XML. Thus - encode data before you insert!
+    # ..Sorry - RT
 
     entities = []
     exceptions = []
