@@ -1,4 +1,3 @@
-import sys
 from xml.dom import minidom
 
 BOOKMARK_COLOR_NONE = "-1"
@@ -81,7 +80,7 @@ class MaltegoEntity(object):
     def returnEntity(self):
         r = ''
         r += "<Entity Type=\"" + str(self.entityType) + "\">"
-        r += "<Value>" + str(self.value) + "</Value>"
+        r += "<Value>" + unicode(self.value) + "</Value>"
         r += "<Weight>" + str(self.weight) + "</Weight>"
         if (len(self.displayInformation) > 0):
             r += "<DisplayInformation>"
@@ -91,7 +90,7 @@ class MaltegoEntity(object):
         if (len(self.additionalFields) > 0):
             r += "<AdditionalFields>"
             for i in range(len(self.additionalFields)):
-                if (str(self.additionalFields[i][2]) <> "strict"):
+                if (str(self.additionalFields[i][2]) != "strict"):
                     r += "<Field Name=\"" + str(self.additionalFields[i][0]) + "\" DisplayName=\"" + str(self.additionalFields[i][1]) + "\">" + str(self.additionalFields[i][3]) + "</Field>"
                 else:
                     r += "<Field MatchingRule=\"" + str(self.additionalFields[i][2]) + "\" Name=\"" + str(self.additionalFields[i][0]) + "\" DisplayName=\"" + str(self.additionalFields[i][1]) + "\">" + str(self.additionalFields[i][3]) + "</Field>"
@@ -103,9 +102,9 @@ class MaltegoEntity(object):
 
 
 class MaltegoTransform(object):
-# We were lazy to use a proper XML library to generate
-# our XML. Thus - encode data before you insert!
-# ..Sorry - RT
+    # We were lazy to use a proper XML library to generate
+    # our XML. Thus - encode data before you insert!
+    # ..Sorry - RT
 
     entities = []
     exceptions = []
