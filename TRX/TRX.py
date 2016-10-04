@@ -173,29 +173,21 @@ class MaltegoMsg:
 
         # read additional fields
         Properties = {}
-        try:
-            AFNodes = xmldoc.getElementsByTagName("AdditionalFields")[0]
-            Settings = AFNodes.getElementsByTagName("Field")
-            for node in Settings:
-                AFName = node.attributes["Name"].value
-                AFValue = self.i_getText(node.childNodes)
-                Properties[AFName] = AFValue
-        except:
-            # FIXME: What exceptions are we looking for?!
-            pass
+        AFNodes = xmldoc.getElementsByTagName("AdditionalFields")[0]
+        Settings = AFNodes.getElementsByTagName("Field")
+        for node in Settings:
+            AFName = node.attributes["Name"].value
+            AFValue = self.i_getText(node.childNodes)
+            Properties[AFName] = AFValue
 
         # parse transform settings
         TransformSettings = {}
-        try:
-            TSNodes = xmldoc.getElementsByTagName("TransformFields")[0]
-            Settings = TSNodes.getElementsByTagName("Field")
-            for node in Settings:
-                TSName = node.attributes["Name"].value
-                TSValue = self.i_getText(node.childNodes)
-                TransformSettings[TSName] = TSValue
-        except:
-            # FIXME: What exceptions are we looking for?!
-            pass
+        TSNodes = xmldoc.getElementsByTagName("TransformFields")[0]
+        Settings = TSNodes.getElementsByTagName("Field")
+        for node in Settings:
+            TSName = node.attributes["Name"].value
+            TSValue = self.i_getText(node.childNodes)
+            TransformSettings[TSName] = TSValue
 
         # load back into object
         self.Properties = Properties
