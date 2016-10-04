@@ -22,7 +22,7 @@ class MaltegoEntity(object):
     value = ""
     weight = 100
     displayInformation = []
-    additionalFields = []
+    additionalFields = {}
     iconURL = ""
     entityType = "Phrase"
 
@@ -31,7 +31,7 @@ class MaltegoEntity(object):
             self.entityType = eT
         if (v is not None):
             self.value = v
-        self.additionalFields = []
+        self.additionalFields = {}
         self.weight = 100
         self.displayInformation = []
         self.iconURL = ""
@@ -53,7 +53,10 @@ class MaltegoEntity(object):
             self.displayInformation.append([dl, di])
 
     def addProperty(self, fieldName=None, displayName=None, matchingRule=False, value=None):
-        self.additionalFields.append([fieldName, displayName, matchingRule, value])
+        self.additionalFields[fieldName] = {}
+        self.additionalFields[fieldName]['displayName'] = displayName
+        self.additionalFields[fieldName]['matchingRule'] = matchingRule
+        self.additionalFields[fieldName]['value'] = value
 
     def setIconURL(self, iU=None):
         if (iU is not None):
@@ -78,6 +81,7 @@ class MaltegoEntity(object):
         self.addProperty('notes#', 'Notes', '', note)
 
     def returnEntity(self):
+        # TODO: issue-83 replace with programmatic XML generation
         r = ''
         r += "<Entity Type=\"" + str(self.entityType) + "\">"
         r += "<Value>" + unicode(self.value) + "</Value>"
@@ -89,11 +93,11 @@ class MaltegoEntity(object):
             r += '</DisplayInformation>'
         if (len(self.additionalFields) > 0):
             r += "<AdditionalFields>"
-            for i in range(len(self.additionalFields)):
-                if (str(self.additionalFields[i][2]) != "strict"):
-                    r += "<Field Name=\"" + str(self.additionalFields[i][0]) + "\" DisplayName=\"" + str(self.additionalFields[i][1]) + "\">" + str(self.additionalFields[i][3]) + "</Field>"
+            for field in self.additionalFields:
+                if (str(field['matchingRule']) != "strict"):
+                    r += "<Field Name=\"" + str(field) + "\" DisplayName=\"" + str(field['displayName']) + "\">" + str(field['value']) + "</Field>"
                 else:
-                    r += "<Field MatchingRule=\"" + str(self.additionalFields[i][2]) + "\" Name=\"" + str(self.additionalFields[i][0]) + "\" DisplayName=\"" + str(self.additionalFields[i][1]) + "\">" + str(self.additionalFields[i][3]) + "</Field>"
+                    r += "<Field MatchingRule=\"strict\" Name=\"" + str(field) + "\" DisplayName=\"" + str(field['displayName']) + "\">" + str(field['value']) + "</Field>"
             r += "</AdditionalFields>"
         if (len(self.iconURL) > 0):
             r += "<IconURL>" + self.iconURL + "</IconURL>"
@@ -102,13 +106,7 @@ class MaltegoEntity(object):
 
 
 class MaltegoTransform(object):
-    # We were lazy to use a proper XML library to generate
-    # our XML. Thus - encode data before you insert!
-    # ..Sorry - RT
-
-    entities = []
-    exceptions = []
-    UIMessages = []
+    # TODO: issue-83 replace with programmatic XML generation
 
     def __init__(self):
         self.entities = []
@@ -152,8 +150,7 @@ class MaltegoTransform(object):
         r += "<UIMessages>"
         for i in range(len(self.UIMessages)):
             r += "<UIMessage MessageType=\"" + \
-                self.UIMessages[i][0] + "\">" + self.UIMessages[
-                    i][1] + "</UIMessage>"
+                self.UIMessages[i][0] + "\">" + self.UIMessages[i][1] + "</UIMessage>"
         r += "</UIMessages>"
 
         r += "</MaltegoTransformResponseMessage>"
@@ -218,13 +215,13 @@ class MaltegoMsg:
         return node.getElementsByTagName(Tag)[0].attributes[Attribute].value
 
     def getProperty(self, skey):
-        if skey in self.Properties.keys():
+        if skey in self.Properties:
             return self.Properties[skey]
         else:
             return None
 
     def getTransformSetting(self, skey):
-        if skey in self.TransformSettings.keys():
+        if skey in self.TransformSettings:
             return self.TransformSettings[skey]
         else:
             return None
