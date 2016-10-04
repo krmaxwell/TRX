@@ -84,7 +84,7 @@ class MaltegoEntity(object):
         # TODO: replace with programmatic XML generation
         r = ''
         r += "<Entity Type=\"" + str(self.entityType) + "\">"
-        r += "<Value>" + str(self.value) + "</Value>"
+        r += "<Value>" + unicode(self.value) + "</Value>"
         r += "<Weight>" + str(self.weight) + "</Weight>"
         if (len(self.displayInformation) > 0):
             r += "<DisplayInformation>"
