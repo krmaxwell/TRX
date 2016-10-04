@@ -81,7 +81,7 @@ class MaltegoEntity(object):
         self.addProperty('notes#', 'Notes', '', note)
 
     def returnEntity(self):
-        # TODO: replace with programmatic XML generation
+        # TODO: issue-83 replace with programmatic XML generation
         r = ''
         r += "<Entity Type=\"" + str(self.entityType) + "\">"
         r += "<Value>" + unicode(self.value) + "</Value>"
@@ -97,7 +97,7 @@ class MaltegoEntity(object):
                 if (str(field['matchingRule']) != "strict"):
                     r += "<Field Name=\"" + str(field) + "\" DisplayName=\"" + str(field['displayName']) + "\">" + str(field['value']) + "</Field>"
                 else:
-                    r += "<Field MatchingRule=\"" + str(self.additionalFields[i][2]) + "\" Name=\"" + str(self.additionalFields[i][0]) + "\" DisplayName=\"" + str(self.additionalFields[i][1]) + "\">" + str(self.additionalFields[i][3]) + "</Field>"
+                    r += "<Field MatchingRule=\"strict\" Name=\"" + str(field) + "\" DisplayName=\"" + str(field['displayName']) + "\">" + str(field['value']) + "</Field>"
             r += "</AdditionalFields>"
         if (len(self.iconURL) > 0):
             r += "<IconURL>" + self.iconURL + "</IconURL>"
@@ -106,7 +106,7 @@ class MaltegoEntity(object):
 
 
 class MaltegoTransform(object):
-    # TODO: replace with programmatic XML generation
+    # TODO: issue-83 replace with programmatic XML generation
 
     def __init__(self):
         self.entities = []
