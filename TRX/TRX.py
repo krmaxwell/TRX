@@ -68,7 +68,7 @@ class MaltegoEntity(object):
 
         Each property has a name, value and a display name. The display name is
         how it will be represented within Maltego. The matching rule determines
-        how entities will be matched and could be ‘strict’ (default) or ‘loose’.
+        how entities will be matched and could be 'strict' (default) or 'loose'.
         See pages 30 & 50 in TRX documentation.
         """
         self.additionalFields[fieldName] = {}
@@ -86,7 +86,7 @@ class MaltegoEntity(object):
             self.iconURL = iU
 
     def setLinkColor(self, color):
-        """Sets the color of the link to the node. Colors are in hex –for example ‘0xff00ff’."""
+        """Sets the color of the link to the node. Colors are in hex, for example '0xff00ff'."""
         self.addProperty('link#maltego.link.color', 'LinkColor', '', color)
 
     def setLinkStyle(self, style):
@@ -158,15 +158,15 @@ class MaltegoTransform(object):
         self.UIMessages = []
 
     def addEntity(self, enType=None, enValue=None):
-        """Adds an entity to the return vessel with type ‘enType’ and
-        value ‘enValue’.
+        """Adds an entity to the return vessel with type 'enType' and
+        value 'enValue'.
         """
         me = MaltegoEntity(enType, enValue)
         self.entities.append(me)
         return me
 
     def addUIMessage(self, message, messageType=UIM_INFORM):
-        """Shows a message ‘msg’ in the Maltego GUI.
+        """Shows a message 'msg' in the Maltego GUI.
 
         Use UIM_* constants.
         """
