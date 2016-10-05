@@ -71,3 +71,22 @@ def test_transform_add_exception():
     xform.addException("Test Exception")
     assert len(xform.exceptions) == 1
     assert xform.exceptions[0] == "Test Exception"
+
+
+def test_transform_add_ui_msg():
+    xform = TRX.MaltegoTransform()
+    xform.addUIMessage("Test Message", TRX.UIM_DEBUG)
+    assert len(xform.UIMessages) == 1
+    assert xform.UIMessages[0][0] == TRX.UIM_DEBUG
+    assert xform.UIMessages[0][1] == "Test Message"
+
+
+def test_transform_throw_exception():
+    xform = TRX.MaltegoTransform()
+    xform.addException("Test Exception")
+    e = xform.throwExceptions()
+    assert isinstance(e, str)
+    test_e = "<MaltegoMessage><MaltegoTransformExceptionMessage><Exceptions><Exception>Test Exception</Exception></Exceptions></MaltegoTransformExceptionMessage></MaltegoMessage>"
+    # TODO: better to do this with XPath or something
+    print e
+    assert e == test_e
