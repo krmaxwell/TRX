@@ -51,14 +51,17 @@ def test_entity_add_property():
     entity = TRX.MaltegoEntity("IPv4Address", "10.0.0.1")
     entity.addProperty("ipaddress.internal", value="True")
     assert len(entity.additionalFields) == 1
+    assert isinstance(entity.additionalFields, dict)
     assert entity.additionalFields.keys() == ["ipaddress.internal"]
-    assert entity.additionalFields["ipaddress.internal"]["value"] == "True"
+    assert isinstance(entity.additionalFields['ipaddress.internal'], TRX.Property)
+    assert entity.additionalFields["ipaddress.internal"].value == "True"
 
 
 def test_entity_displayinfo():
     entity = TRX.MaltegoEntity()
     entity.addDisplayInformation("TestValue", "TestLabel")
     assert len(entity.displayInformation) == 1
+    assert isinstance(entity.displayInformation, dict)
     assert entity.displayInformation.keys() == ["TestLabel"]
     assert entity.displayInformation['TestLabel'] == "TestValue"
 
@@ -85,6 +88,7 @@ def test_transform_add_ui_msg():
     xform = TRX.MaltegoTransform()
     xform.addUIMessage("Test Message", TRX.UIM_DEBUG)
     assert len(xform.UIMessages) == 1
+    assert isinstance(xform.UIMessages[0], TRX.UIMessage)
     assert xform.UIMessages[0].messageType == TRX.UIM_DEBUG
     assert xform.UIMessages[0].message == "Test Message"
 

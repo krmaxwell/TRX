@@ -19,6 +19,7 @@ UIM_INFORM = 'Inform'
 UIM_DEBUG = 'Debug'
 
 UIMessage = namedtuple('UIMessage', 'message, messageType')
+Property = namedtuple('EProperty', 'displayname, matchingrule, value')
 
 
 class MaltegoEntity(object):
@@ -74,10 +75,7 @@ class MaltegoEntity(object):
         how entities will be matched and could be 'strict' (default) or 'loose'.
         See pages 30 & 50 in TRX documentation.
         """
-        self.additionalFields[fieldName] = {}
-        self.additionalFields[fieldName]['displayName'] = displayName
-        self.additionalFields[fieldName]['matchingRule'] = matchingRule
-        self.additionalFields[fieldName]['value'] = value
+        self.additionalFields[fieldName] = Property(displayName, matchingRule, value)
 
     def setIconURL(self, iU=None):
         """Define a URL pointing to a PNG or JPG for the icon.
