@@ -143,25 +143,37 @@ class MaltegoEntity(object):
 
 
 class MaltegoTransform(object):
-    # TODO: issue-83 replace with programmatic XML generation
 
     def __init__(self):
+        """Create Maltego transform to hold entities, exceptions, and messages.
+
+        See page 49 in TRX documentation.
+        """
         self.entities = []
         self.exceptions = []
         self.UIMessages = []
 
     def addEntity(self, enType=None, enValue=None):
+        """Adds an entity to the return vessel with type ‘enType’ and
+        value ‘enValue’.
+        """
         me = MaltegoEntity(enType, enValue)
         self.entities.append(me)
         return me
 
-    def addUIMessage(self, message, messageType="Inform"):
+    def addUIMessage(self, message, messageType=UIM_INFORM):
+        """Shows a message ‘msg’ in the Maltego GUI.
+
+        Use UIM_* constants.
+        """
         self.UIMessages.append([messageType, message])
 
     def addException(self, exceptionString):
+        """Throws a transform exception."""
         self.exceptions.append(exceptionString)
 
     def throwExceptions(self):
+        """Returns the XML of the exception(s)."""
         r = ''
         r += "<MaltegoMessage>"
         r += "<MaltegoTransformExceptionMessage>"
@@ -175,6 +187,7 @@ class MaltegoTransform(object):
         return r
 
     def returnOutput(self):
+        """Returns the XML of the vessel."""
         r = ''
         r += "<MaltegoMessage>"
         r += "<MaltegoTransformResponseMessage>"
