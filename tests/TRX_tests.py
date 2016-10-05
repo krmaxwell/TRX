@@ -77,8 +77,8 @@ def test_transform_add_ui_msg():
     xform = TRX.MaltegoTransform()
     xform.addUIMessage("Test Message", TRX.UIM_DEBUG)
     assert len(xform.UIMessages) == 1
-    assert xform.UIMessages[0][0] == TRX.UIM_DEBUG
-    assert xform.UIMessages[0][1] == "Test Message"
+    assert xform.UIMessages[0].messageType == TRX.UIM_DEBUG
+    assert xform.UIMessages[0].message == "Test Message"
 
 
 def test_transform_throw_exception():

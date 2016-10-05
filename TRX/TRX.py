@@ -1,3 +1,4 @@
+from collections import namedtuple
 from xml.dom import minidom
 
 BOOKMARK_COLOR_NONE = "-1"
@@ -16,6 +17,8 @@ UIM_FATAL = 'FatalError'
 UIM_PARTIAL = 'PartialError'
 UIM_INFORM = 'Inform'
 UIM_DEBUG = 'Debug'
+
+UIMessage = namedtuple('UIMessage', 'message, messageType')
 
 
 class MaltegoEntity(object):
@@ -165,12 +168,12 @@ class MaltegoTransform(object):
         self.entities.append(me)
         return me
 
-    def addUIMessage(self, message, messageType=UIM_INFORM):
+    def addUIMessage(self, msg, msgType=UIM_INFORM):
         """Shows a message 'msg' in the Maltego GUI.
 
-        Use UIM_* constants.
+        Use UIM_* constants for message type.
         """
-        self.UIMessages.append([messageType, message])
+        self.UIMessages.append(UIMessage(messageType=msgType, message=msg))
 
     def addException(self, exceptionString):
         """Throws a transform exception."""
@@ -202,9 +205,8 @@ class MaltegoTransform(object):
         r += "</Entities>"
 
         r += "<UIMessages>"
-        for i in range(len(self.UIMessages)):
-            r += "<UIMessage MessageType=\"" + \
-                self.UIMessages[i][0] + "\">" + self.UIMessages[i][1] + "</UIMessage>"
+        for msg in self.UIMessages:
+            r += "<UIMessage MessageType=\"" + msg.messageType + "\">" + msg.message + "</UIMessage>"
         r += "</UIMessages>"
 
         r += "</MaltegoTransformResponseMessage>"
