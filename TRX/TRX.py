@@ -274,6 +274,7 @@ class MaltegoMsg:
             return None
 
     def getTransformSetting(self, skey):
+        """Returns the value of the key, or None if not defined."""
         if skey in self.TransformSettings:
             return self.TransformSettings[skey]
         else:
