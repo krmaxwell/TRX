@@ -9,8 +9,8 @@ config = {
     'url': 'https://github.com/krmaxwell/TRX',
     'download_url': 'https://github.com/krmaxwell/TRX',
     'author_email': 'krmaxwell@gmail.com',
-    'version': '0.1',
-    'install_requires': ['nose'],
+    'version': '0.2',
+    'install_requires': ['nose', 'coverage'],
     'packages': ['TRX'],
     'scripts': [],
     'name': 'TRX'
