@@ -225,11 +225,11 @@ class MaltegoMsg:
         xmldoc = minidom.parseString(MaltegoXML)
 
         # read the easy stuff like value, limits etc
-        self.Value = self.i_getNodeValue(xmldoc, "Value")
-        self.Weight = self.i_getNodeValue(xmldoc, "Weight")
+        self.Value = self._getNodeValue(xmldoc, "Value")
+        self.Weight = self._getNodeValue(xmldoc, "Weight")
         self.Slider = int(
-            self.i_getNodeAttributeValue(xmldoc, "Limits", "SoftLimit"))
-        self.Type = self.i_getNodeAttributeValue(xmldoc, "Entity", "Type")
+            self._getNodeAttributeValue(xmldoc, "Limits", "SoftLimit"))
+        self.Type = self._getNodeAttributeValue(xmldoc, "Entity", "Type")
 
         # read additional fields
         Properties = {}
@@ -237,7 +237,7 @@ class MaltegoMsg:
         Settings = AFNodes.getElementsByTagName("Field")
         for node in Settings:
             AFName = node.attributes["Name"].value
-            AFValue = self.i_getText(node.childNodes)
+            AFValue = self._getText(node.childNodes)
             Properties[AFName] = AFValue
 
         # parse transform settings
@@ -246,24 +246,24 @@ class MaltegoMsg:
         Settings = TSNodes.getElementsByTagName("Field")
         for node in Settings:
             TSName = node.attributes["Name"].value
-            TSValue = self.i_getText(node.childNodes)
+            TSValue = self._getText(node.childNodes)
             TransformSettings[TSName] = TSValue
 
         # load back into object
         self.Properties = Properties
         self.TransformSettings = TransformSettings
 
-    def i_getText(self, nodelist):
+    def _getText(self, nodelist):
         rc = []
         for node in nodelist:
             if node.nodeType == node.TEXT_NODE:
                 rc.append(node.data)
         return ''.join(rc)
 
-    def i_getNodeValue(self, node, Tag):
-        return self.i_getText(node.getElementsByTagName(Tag)[0].childNodes)
+    def _getNodeValue(self, node, Tag):
+        return self._getText(node.getElementsByTagName(Tag)[0].childNodes)
 
-    def i_getNodeAttributeValue(self, node, Tag, Attribute):
+    def _getNodeAttributeValue(self, node, Tag, Attribute):
         return node.getElementsByTagName(Tag)[0].attributes[Attribute].value
 
     def getProperty(self, skey):
