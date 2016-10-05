@@ -19,18 +19,17 @@ UIM_DEBUG = 'Debug'
 
 
 class MaltegoEntity(object):
-    value = ""
-    weight = 100
-    displayInformation = []
-    additionalFields = {}
-    iconURL = ""
-    entityType = "Phrase"
 
     def __init__(self, eT=None, v=None):
         if (eT is not None):
             self.entityType = eT
+        else:
+            self.entityType = "Phrase"
+
         if (v is not None):
             self.value = v
+        else:
+            self.value = ""
         self.additionalFields = {}
         self.weight = 100
         self.displayInformation = []
