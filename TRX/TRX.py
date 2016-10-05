@@ -35,8 +35,8 @@ class MaltegoEntity(object):
         else:
             self.value = ""
         self.additionalFields = {}
+        self.displayInformation = {}
         self.weight = 100
-        self.displayInformation = []
         self.iconURL = ""
 
     def setType(self, eT=None):
@@ -64,7 +64,7 @@ class MaltegoEntity(object):
         TRX documentation.
         """
         if (di is not None):
-            self.displayInformation.append([dl, di])
+            self.displayInformation[dl] = di
 
     def addProperty(self, fieldName=None, displayName=None, matchingRule=False, value=None):
         """Add a property to the entity.
@@ -128,8 +128,8 @@ class MaltegoEntity(object):
         r += "<Weight>" + str(self.weight) + "</Weight>"
         if (len(self.displayInformation) > 0):
             r += "<DisplayInformation>"
-            for i in range(len(self.displayInformation)):
-                r += '<Label Name=\"' + self.displayInformation[i][0] + '\" Type=\"text/html\"><![CDATA[' + str(self.displayInformation[i][1]) + ']]></Label>'
+            for label in self.displayInformation:
+                r += '<Label Name=\"' + label + '\" Type=\"text/html\"><![CDATA[' + str(self.displayInformation[label]) + ']]></Label>'
             r += '</DisplayInformation>'
         if (len(self.additionalFields) > 0):
             r += "<AdditionalFields>"

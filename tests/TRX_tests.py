@@ -55,6 +55,14 @@ def test_entity_add_property():
     assert entity.additionalFields["ipaddress.internal"]["value"] == "True"
 
 
+def test_entity_displayinfo():
+    entity = TRX.MaltegoEntity()
+    entity.addDisplayInformation("TestValue", "TestLabel")
+    assert len(entity.displayInformation) == 1
+    assert entity.displayInformation.keys() == ["TestLabel"]
+    assert entity.displayInformation['TestLabel'] == "TestValue"
+
+
 def test_transform_creation():
     xform = TRX.MaltegoTransform()
     assert isinstance(xform, TRX.MaltegoTransform)
