@@ -1,3 +1,4 @@
+from collections import namedtuple
 from xml.dom import minidom
 
 BOOKMARK_COLOR_NONE = "-1"
@@ -17,6 +18,9 @@ UIM_PARTIAL = 'PartialError'
 UIM_INFORM = 'Inform'
 UIM_DEBUG = 'Debug'
 
+UIMessage = namedtuple('UIMessage', 'message, messageType')
+Property = namedtuple('EProperty', 'displayname, matchingrule, value')
+
 
 class MaltegoEntity(object):
 
@@ -32,8 +36,8 @@ class MaltegoEntity(object):
         else:
             self.value = ""
         self.additionalFields = {}
+        self.displayInformation = {}
         self.weight = 100
-        self.displayInformation = []
         self.iconURL = ""
 
     def setType(self, eT=None):
@@ -61,7 +65,7 @@ class MaltegoEntity(object):
         TRX documentation.
         """
         if (di is not None):
-            self.displayInformation.append([dl, di])
+            self.displayInformation[dl] = di
 
     def addProperty(self, fieldName=None, displayName=None, matchingRule=False, value=None):
         """Add a property to the entity.
@@ -71,10 +75,7 @@ class MaltegoEntity(object):
         how entities will be matched and could be 'strict' (default) or 'loose'.
         See pages 30 & 50 in TRX documentation.
         """
-        self.additionalFields[fieldName] = {}
-        self.additionalFields[fieldName]['displayName'] = displayName
-        self.additionalFields[fieldName]['matchingRule'] = matchingRule
-        self.additionalFields[fieldName]['value'] = value
+        self.additionalFields[fieldName] = Property(displayName, matchingRule, value)
 
     def setIconURL(self, iU=None):
         """Define a URL pointing to a PNG or JPG for the icon.
@@ -125,8 +126,8 @@ class MaltegoEntity(object):
         r += "<Weight>" + str(self.weight) + "</Weight>"
         if (len(self.displayInformation) > 0):
             r += "<DisplayInformation>"
-            for i in range(len(self.displayInformation)):
-                r += '<Label Name=\"' + self.displayInformation[i][0] + '\" Type=\"text/html\"><![CDATA[' + str(self.displayInformation[i][1]) + ']]></Label>'
+            for label in self.displayInformation:
+                r += '<Label Name=\"' + label + '\" Type=\"text/html\"><![CDATA[' + str(self.displayInformation[label]) + ']]></Label>'
             r += '</DisplayInformation>'
         if (len(self.additionalFields) > 0):
             r += "<AdditionalFields>"
@@ -165,12 +166,12 @@ class MaltegoTransform(object):
         self.entities.append(me)
         return me
 
-    def addUIMessage(self, message, messageType=UIM_INFORM):
+    def addUIMessage(self, msg, msgType=UIM_INFORM):
         """Shows a message 'msg' in the Maltego GUI.
 
-        Use UIM_* constants.
+        Use UIM_* constants for message type.
         """
-        self.UIMessages.append([messageType, message])
+        self.UIMessages.append(UIMessage(messageType=msgType, message=msg))
 
     def addException(self, exceptionString):
         """Throws a transform exception."""
@@ -202,9 +203,8 @@ class MaltegoTransform(object):
         r += "</Entities>"
 
         r += "<UIMessages>"
-        for i in range(len(self.UIMessages)):
-            r += "<UIMessage MessageType=\"" + \
-                self.UIMessages[i][0] + "\">" + self.UIMessages[i][1] + "</UIMessage>"
+        for msg in self.UIMessages:
+            r += "<UIMessage MessageType=\"" + msg.messageType + "\">" + msg.message + "</UIMessage>"
         r += "</UIMessages>"
 
         r += "</MaltegoTransformResponseMessage>"
