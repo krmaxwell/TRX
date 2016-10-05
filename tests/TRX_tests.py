@@ -45,3 +45,29 @@ def test_entity_set_value():
     entity = TRX.MaltegoEntity()
     entity.setValue("Maltego")
     assert entity.value == "Maltego"
+
+
+def test_entity_add_property():
+    entity = TRX.MaltegoEntity("IPv4Address", "10.0.0.1")
+    entity.addProperty("ipaddress.internal", value="True")
+    assert len(entity.additionalFields) == 1
+    assert entity.additionalFields.keys() == ["ipaddress.internal"]
+    assert entity.additionalFields["ipaddress.internal"]["value"] == "True"
+
+
+def test_transform_creation():
+    xform = TRX.MaltegoTransform()
+    assert isinstance(xform, TRX.MaltegoTransform)
+
+
+def test_transform_add_entity():
+    xform = TRX.MaltegoTransform()
+    entity = xform.addEntity()
+    assert isinstance(entity, TRX.MaltegoEntity)
+
+
+def test_transform_add_exception():
+    xform = TRX.MaltegoTransform()
+    xform.addException("Test Exception")
+    assert len(xform.exceptions) == 1
+    assert xform.exceptions[0] == "Test Exception"
