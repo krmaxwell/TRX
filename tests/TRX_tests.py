@@ -24,12 +24,24 @@ def test_entity_default_value():
     assert entity.value == ""
 
 
-def test_entity_set_type():
+def test_entity_init_type():
     entity = TRX.MaltegoEntity("IPv4Address")
     assert entity.entityType == "IPv4Address"
 
 
-def test_entity_set_value():
+def test_entity_set_type():
+    entity = TRX.MaltegoEntity()
+    entity.setType("Location")
+    assert entity.entityType == "Location"
+
+
+def test_entity_init_value():
     entity = TRX.MaltegoEntity("IPv4Address", "127.0.0.1")
     # FIXME: the below matches the library but not the documentation!
     assert entity.value == "127.0.0.1"
+
+
+def test_entity_set_value():
+    entity = TRX.MaltegoEntity()
+    entity.setValue("Maltego")
+    assert entity.value == "Maltego"
