@@ -143,6 +143,10 @@ class MaltegoEntity(object):
 
 
 class MaltegoTransform(object):
+    """This is used to construct the reply to the TDS.
+
+    All values are strings.
+    """
 
     def __init__(self):
         """Create Maltego transform to hold entities, exceptions, and messages.
@@ -209,8 +213,14 @@ class MaltegoTransform(object):
 
 
 class MaltegoMsg:
+    """This reads the Maltego request and is passed along to each transform.
+
+
+    See page 49 in TRX documentation.
+    """
 
     def __init__(self, MaltegoXML=""):
+        """Parse XML received from Maltego."""
 
         xmldoc = minidom.parseString(MaltegoXML)
 
@@ -257,6 +267,7 @@ class MaltegoMsg:
         return node.getElementsByTagName(Tag)[0].attributes[Attribute].value
 
     def getProperty(self, skey):
+        """Returns the value of the key, or None if not defined."""
         if skey in self.Properties:
             return self.Properties[skey]
         else:
