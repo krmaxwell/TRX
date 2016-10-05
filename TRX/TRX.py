@@ -131,7 +131,7 @@ class MaltegoTransform(object):
         r += "<Exceptions>"
 
         for i in range(len(self.exceptions)):
-            r += "<Exception>" + self.exceptions[i] + "</Exceptions>"
+            r += "<Exception>" + self.exceptions[i] + "</Exception>"
         r += "</Exceptions>"
         r += "</MaltegoTransformExceptionMessage>"
         r += "</MaltegoMessage>"
