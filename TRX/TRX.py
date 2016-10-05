@@ -21,6 +21,7 @@ UIM_DEBUG = 'Debug'
 class MaltegoEntity(object):
 
     def __init__(self, eT=None, v=None):
+        """Create a Maltego entity of type eT and value v."""
         if (eT is not None):
             self.entityType = eT
         else:
@@ -36,51 +37,88 @@ class MaltegoEntity(object):
         self.iconURL = ""
 
     def setType(self, eT=None):
+        """Sets the type of the entity to eT.
+
+        See list of Entity definitions in TRX documentation for possible values.
+        """
         if (eT is not None):
             self.entityType = eT
 
     def setValue(self, eV=None):
+        """Sets the value of Maltego entity to eV."""
         if (eV is not None):
             self.value = eV
 
     def setWeight(self, w=None):
+        """Sets weight of Maltego entity to w."""
         if (w is not None):
             self.weight = w
 
     def addDisplayInformation(self, di=None, dl='Info'):
+        """Adds display information to entity.
+
+        This field is rendered as HTML within Maltego. See pages 29 & 50 in
+        TRX documentation.
+        """
         if (di is not None):
             self.displayInformation.append([dl, di])
 
     def addProperty(self, fieldName=None, displayName=None, matchingRule=False, value=None):
+        """Add a property to the entity.
+
+        Each property has a name, value and a display name. The display name is
+        how it will be represented within Maltego. The matching rule determines
+        how entities will be matched and could be ‘strict’ (default) or ‘loose’.
+        See pages 30 & 50 in TRX documentation.
+        """
         self.additionalFields[fieldName] = {}
         self.additionalFields[fieldName]['displayName'] = displayName
         self.additionalFields[fieldName]['matchingRule'] = matchingRule
         self.additionalFields[fieldName]['value'] = value
 
     def setIconURL(self, iU=None):
+        """Define a URL pointing to a PNG or JPG for the icon.
+
+        Maltego will size to fit but lots of large files will drain
+        resources.
+        """
         if (iU is not None):
             self.iconURL = iU
 
     def setLinkColor(self, color):
+        """Sets the color of the link to the node. Colors are in hex –for example ‘0xff00ff’."""
         self.addProperty('link#maltego.link.color', 'LinkColor', '', color)
 
     def setLinkStyle(self, style):
+        """Set the style of a link to an entity using LINK_STYLE_* constants."""
         self.addProperty('link#maltego.link.style', 'LinkStyle', '', style)
 
     def setLinkThickness(self, thick):
+        """Set the thickiness of a link to an entity in pixels."""
         self.addProperty('link#maltego.link.thickness', 'Thickness', '', str(thick))
 
     def setLinkLabel(self, label):
+        """Sets the label of the link to the node."""
         self.addProperty('link#maltego.link.label', 'Label', '', label)
 
     def setBookmark(self, bookmark):
+        """Sets the bookmark color of the node.
+
+        Keep in mind that these are chosen from a set number of colors. Use the
+        BOOKMARK_COLOR_* constants.
+        """
         self.addProperty('bookmark#', 'Bookmark', '', bookmark)
 
     def setNote(self, note):
+        """Creates an annotation to the node.
+
+        If a subsequent transform sets an annotation on the node it will be
+        appended to the note.
+        """
         self.addProperty('notes#', 'Notes', '', note)
 
     def returnEntity(self):
-        # TODO: issue-83 replace with programmatic XML generation
+        """Generate XML snippet for returning to Maltego."""
         r = ''
         r += "<Entity Type=\"" + str(self.entityType) + "\">"
         r += "<Value>" + unicode(self.value) + "</Value>"
