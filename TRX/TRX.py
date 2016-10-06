@@ -121,21 +121,21 @@ class MaltegoEntity(object):
     def returnEntity(self):
         """Generate XML snippet for returning to Maltego."""
         r = ''
-        r += "<Entity Type=\"" + str(self.entityType) + "\">"
+        r += "<Entity Type=\"" + unicode(self.entityType) + "\">"
         r += "<Value>" + unicode(self.value) + "</Value>"
         r += "<Weight>" + str(self.weight) + "</Weight>"
         if (len(self.displayInformation) > 0):
             r += "<DisplayInformation>"
             for label in self.displayInformation:
-                r += '<Label Name=\"' + label + '\" Type=\"text/html\"><![CDATA[' + str(self.displayInformation[label]) + ']]></Label>'
+                r += '<Label Name=\"' + label + '\" Type=\"text/html\"><![CDATA[' + unicode(self.displayInformation[label]) + ']]></Label>'
             r += '</DisplayInformation>'
         if (len(self.additionalFields) > 0):
             r += "<AdditionalFields>"
             for field in self.additionalFields:
                 if (self.additionalFields[field].matchingRule != "strict"):
-                    r += u"<Field Name=\"" + field + u"\" DisplayName=\"" + unicode(self.additionalFields[field].displayName) + u"\">" + unicode(self.additionalFields[field].value) + u"</Field>"
+                    r += "<Field Name=\"" + field + "\" DisplayName=\"" + unicode(self.additionalFields[field].displayName) + "\">" + unicode(self.additionalFields[field].value) + "</Field>"
                 else:
-                    r += u"<Field MatchingRule=\"strict\" Name=\"" + field + u"\" DisplayName=\"" + unicode(self.additionalFields[field].displayName) + u"\">" + unicode(self.additionalFields[field].value) + u"</Field>"
+                    r += "<Field MatchingRule=\"strict\" Name=\"" + field + "\" DisplayName=\"" + unicode(self.additionalFields[field].displayName) + "\">" + unicode(self.additionalFields[field].value) + u"</Field>"
             r += "</AdditionalFields>"
         if (len(self.iconURL) > 0):
             r += "<IconURL>" + self.iconURL + "</IconURL>"
