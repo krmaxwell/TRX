@@ -1,3 +1,6 @@
+general:
+  artifacts:
+    - cover/
 test:
   override:
-    - nosetests --with-coverage
+    - nosetests
