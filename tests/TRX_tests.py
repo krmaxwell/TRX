@@ -52,19 +52,28 @@ def test_entity_set_value():
     assert_equal(entity.value, "Maltego")
 
 
-# FIXME: refactor into multiple tests
-def test_entity_add_property():
+def test_entity_property_count():
     entity = TRX.MaltegoEntity("IPv4Address", "10.0.0.1")
     entity.addProperty("ipaddress.internal", value="True")
     assert_equal(len(entity.additionalFields), 1)
+
+
+def test_entity_property_dict():
+    entity = TRX.MaltegoEntity("IPv4Address", "10.0.0.1")
+    entity.addProperty("ipaddress.internal", value="True")
     assert_is_instance(entity.additionalFields, dict)
     assert_equal(entity.additionalFields.keys(), ["ipaddress.internal"])
+
+
+def test_entity_property_results():
+    entity = TRX.MaltegoEntity("IPv4Address", "10.0.0.1")
+    entity.addProperty("ipaddress.internal", value="True")
     assert_is_instance(entity.additionalFields['ipaddress.internal'], TRX.Property)
     # NOTE: The following tests for the string "True", not the bool True
     assert_equal(entity.additionalFields["ipaddress.internal"].value, "True")
-    assert_is_instance(entity.returnEntity(), unicode)
 
 
+# FIXME: refactor into multiple tests
 def test_entity_displayinfo():
     entity = TRX.MaltegoEntity()
     entity.addDisplayInformation("TestValue", "TestLabel")
