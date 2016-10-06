@@ -78,6 +78,7 @@ def test_transform_add_entity():
     xform = TRX.MaltegoTransform()
     entity = xform.addEntity()
     assert_is_instance(entity, TRX.MaltegoEntity)
+    assert_is_instance(xform.returnOutput(), unicode)
 
 
 def test_transform_add_exception():
