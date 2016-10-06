@@ -73,14 +73,26 @@ def test_entity_property_results():
     assert_equal(entity.additionalFields["ipaddress.internal"].value, "True")
 
 
-# FIXME: refactor into multiple tests
-def test_entity_displayinfo():
+def test_entity_displayinfo_count():
     entity = TRX.MaltegoEntity()
     entity.addDisplayInformation("TestValue", "TestLabel")
     assert_equal(len(entity.displayInformation), 1)
     assert_is_instance(entity.displayInformation, dict)
+
+
+def test_entity_displayinfo_dict():
+    entity = TRX.MaltegoEntity()
+    entity.addDisplayInformation("TestValue", "TestLabel")
     assert_equal(entity.displayInformation.keys(), ["TestLabel"])
     assert_equal(entity.displayInformation['TestLabel'], "TestValue")
+
+
+def test_entity_displayinfo_results():
+    entity = TRX.MaltegoEntity()
+    entity.addDisplayInformation("TestValue", "TestLabel")
+    r = xmltodict.parse(entity.returnEntity())
+    assert_equal(r['Entity']['DisplayInformation']['Label']['@Name'], "TestLabel")
+    assert_equal(r['Entity']['DisplayInformation']['Label']['#text'], "TestValue")
 
 
 def test_entity_unicode():
