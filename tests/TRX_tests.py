@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 
-from nose.tools import assert_equal, assert_is_instance
+import xmltodict
+from nose.tools import assert_equal
+from nose.tools import assert_is_instance
 from TRX import TRX
 
 
@@ -50,6 +52,7 @@ def test_entity_set_value():
     assert_equal(entity.value, "Maltego")
 
 
+# FIXME: refactor into multiple tests
 def test_entity_add_property():
     entity = TRX.MaltegoEntity("IPv4Address", "10.0.0.1")
     entity.addProperty("ipaddress.internal", value="True")
@@ -103,6 +106,10 @@ def test_transform_add_ui_msg():
     assert_is_instance(xform.UIMessages[0], TRX.UIMessage)
     assert_equal(xform.UIMessages[0].messageType, TRX.UIM_DEBUG)
     assert_equal(xform.UIMessages[0].message, "Test Message")
+    out = xmltodict.parse(xform.returnOutput())
+    assert_is_instance(out, dict)
+    assert_equal(out['MaltegoMessage']['MaltegoTransformResponseMessage']['UIMessages']['UIMessage']['@MessageType'], TRX.UIM_DEBUG)
+    assert_equal(out['MaltegoMessage']['MaltegoTransformResponseMessage']['UIMessages']['UIMessage']['#text'], 'Test Message')
 
 
 def test_transform_throw_exception():
@@ -110,6 +117,6 @@ def test_transform_throw_exception():
     xform.addException("Test Exception")
     e = xform.throwExceptions()
     assert_is_instance(e, str)
-    test_e = "<MaltegoMessage><MaltegoTransformExceptionMessage><Exceptions><Exception>Test Exception</Exception></Exceptions></MaltegoTransformExceptionMessage></MaltegoMessage>"
-    # TODO: better to do this with XPath or something
-    assert_equal(e, test_e)
+    e_data = xmltodict.parse(e)
+    assert_is_instance(e_data, dict)
+    assert_equal(e_data['MaltegoMessage']['MaltegoTransformExceptionMessage']['Exceptions']['Exception'], "Test Exception")
