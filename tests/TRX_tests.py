@@ -55,6 +55,7 @@ def test_entity_add_property():
     assert entity.additionalFields.keys() == ["ipaddress.internal"]
     assert isinstance(entity.additionalFields['ipaddress.internal'], TRX.Property)
     assert entity.additionalFields["ipaddress.internal"].value == "True"
+    assert isinstance(entity.returnEntity(), str)
 
 
 def test_entity_displayinfo():
