@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from nose.tools import assert_equal, assert_is_instance
 from TRX import TRX
 
@@ -67,6 +69,12 @@ def test_entity_displayinfo():
     assert_is_instance(entity.displayInformation, dict)
     assert_equal(entity.displayInformation.keys(), ["TestLabel"])
     assert_equal(entity.displayInformation['TestLabel'], "TestValue")
+
+
+def test_entity_unicode():
+    entity = TRX.MaltegoEntity("Phrase", u"Файлы локализации")
+    entity.addProperty("Test Property", u"Инструкция по локализации")
+    assert_is_instance(entity.returnEntity(), unicode)
 
 
 def test_transform_creation():
