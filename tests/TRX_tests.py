@@ -143,11 +143,16 @@ def test_transform_uimsg_result():
     assert_equal(out['MaltegoMessage']['MaltegoTransformResponseMessage']['UIMessages']['UIMessage']['#text'], 'Test Message')
 
 
-def test_transform_throw_exception():
+def test_transform_exception_str():
     xform = TRX.MaltegoTransform()
     xform.addException("Test Exception")
     e = xform.throwExceptions()
     assert_is_instance(e, str)
-    e_data = xmltodict.parse(e)
+
+
+def test_transform_exception_result():
+    xform = TRX.MaltegoTransform()
+    xform.addException("Test Exception")
+    e_data = xmltodict.parse(xform.throwExceptions())
     assert_is_instance(e_data, dict)
     assert_equal(e_data['MaltegoMessage']['MaltegoTransformExceptionMessage']['Exceptions']['Exception'], "Test Exception")
