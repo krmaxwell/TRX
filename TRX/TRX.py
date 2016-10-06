@@ -133,9 +133,9 @@ class MaltegoEntity(object):
             r += "<AdditionalFields>"
             for field in self.additionalFields:
                 if (self.additionalFields[field].matchingRule != "strict"):
-                    r += "<Field Name=\"" + field + "\" DisplayName=\"" + str(self.additionalFields[field].displayName) + "\">" + str(self.additionalFields[field].value) + "</Field>"
+                    r += u"<Field Name=\"" + field + u"\" DisplayName=\"" + unicode(self.additionalFields[field].displayName) + u"\">" + unicode(self.additionalFields[field].value) + u"</Field>"
                 else:
-                    r += "<Field MatchingRule=\"strict\" Name=\"" + field + "\" DisplayName=\"" + str(self.additionalFields[field].displayName) + "\">" + str(self.additionalFields[field].value) + "</Field>"
+                    r += u"<Field MatchingRule=\"strict\" Name=\"" + field + u"\" DisplayName=\"" + unicode(self.additionalFields[field].displayName) + u"\">" + unicode(self.additionalFields[field].value) + u"</Field>"
             r += "</AdditionalFields>"
         if (len(self.iconURL) > 0):
             r += "<IconURL>" + self.iconURL + "</IconURL>"
