@@ -57,7 +57,7 @@ def test_entity_add_property():
     assert_is_instance(entity.additionalFields['ipaddress.internal'], TRX.Property)
     # NOTE: The following tests for the string "True", not the bool True
     assert_equal(entity.additionalFields["ipaddress.internal"].value, "True")
-    assert_is_instance(entity.returnEntity(), str)
+    assert_is_instance(entity.returnEntity(), unicode)
 
 
 def test_entity_displayinfo():

@@ -19,7 +19,7 @@ UIM_INFORM = 'Inform'
 UIM_DEBUG = 'Debug'
 
 UIMessage = namedtuple('UIMessage', 'message, messageType')
-Property = namedtuple('EProperty', 'displayname, matchingrule, value')
+Property = namedtuple('Property', 'displayName, matchingRule, value')
 
 
 class MaltegoEntity(object):
@@ -132,10 +132,10 @@ class MaltegoEntity(object):
         if (len(self.additionalFields) > 0):
             r += "<AdditionalFields>"
             for field in self.additionalFields:
-                if (str(field['matchingRule']) != "strict"):
-                    r += "<Field Name=\"" + str(field) + "\" DisplayName=\"" + str(field['displayName']) + "\">" + str(field['value']) + "</Field>"
+                if (self.additionalFields[field].matchingRule != "strict"):
+                    r += "<Field Name=\"" + field + "\" DisplayName=\"" + str(self.additionalFields[field].displayName) + "\">" + str(self.additionalFields[field].value) + "</Field>"
                 else:
-                    r += "<Field MatchingRule=\"strict\" Name=\"" + str(field) + "\" DisplayName=\"" + str(field['displayName']) + "\">" + str(field['value']) + "</Field>"
+                    r += "<Field MatchingRule=\"strict\" Name=\"" + field + "\" DisplayName=\"" + str(self.additionalFields[field].displayName) + "\">" + str(self.additionalFields[field].value) + "</Field>"
             r += "</AdditionalFields>"
         if (len(self.iconURL) > 0):
             r += "<IconURL>" + self.iconURL + "</IconURL>"
