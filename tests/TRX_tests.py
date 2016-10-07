@@ -154,6 +154,31 @@ def test_entity_link_label():
     assert_equal(out['Entity']['AdditionalFields']['Field']['#text'], label)
 
 
+def test_entity_bookmark():
+    entity = TRX.MaltegoEntity()
+    entity.setBookmark(TRX.BOOKMARK_COLOR_GREEN)
+    out = xmltodict.parse(entity.returnEntity())
+    assert_equal(entity.additionalFields['bookmark#'].value, "1")
+    assert_equal(out['Entity']['AdditionalFields']['Field']['#text'], "1")
+
+
+def test_entity_note():
+    entity = TRX.MaltegoEntity()
+    note = "Test Note"
+    entity.setNote(note)
+    out = xmltodict.parse(entity.returnEntity())
+    assert_equal(entity.additionalFields['notes#'].value, note)
+    assert_equal(out['Entity']['AdditionalFields']['Field']['#text'], note)
+
+
+def test_entity_strict():
+    entity = TRX.MaltegoEntity()
+    entity.addProperty('test', matchingRule="strict", value="StrictTest")
+    out = xmltodict.parse(entity.returnEntity())
+    assert_equal(entity.additionalFields['test'].matchingRule, "strict")
+    assert_equal(out['Entity']['AdditionalFields']['Field']['@MatchingRule'], 'strict')
+
+
 def test_transform_creation():
     xform = TRX.MaltegoTransform()
     assert_is_instance(xform, TRX.MaltegoTransform)
