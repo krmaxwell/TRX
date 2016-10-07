@@ -120,6 +120,40 @@ def test_entity_unicode():
     assert_is_instance(entity.returnEntity(), unicode)
 
 
+def test_entity_link_color():
+    entity = TRX.MaltegoEntity()
+    color = '0xff00ff'
+    entity.setLinkColor(color)
+    out = xmltodict.parse(entity.returnEntity())
+    assert_equal(entity.additionalFields['link#maltego.link.color'].value, color)
+    assert_equal(out['Entity']['AdditionalFields']['Field']['#text'], color)
+
+
+def test_entity_link_style():
+    entity = TRX.MaltegoEntity()
+    entity.setLinkStyle(TRX.LINK_STYLE_DASHED)
+    out = xmltodict.parse(entity.returnEntity())
+    assert_equal(entity.additionalFields['link#maltego.link.style'].value, "1")
+    assert_equal(out['Entity']['AdditionalFields']['Field']['#text'], "1")
+
+
+def test_entity_link_thickness():
+    entity = TRX.MaltegoEntity()
+    entity.setLinkThickness(42)
+    out = xmltodict.parse(entity.returnEntity())
+    assert_equal(entity.additionalFields['link#maltego.link.thickness'].value, "42")
+    assert_equal(out['Entity']['AdditionalFields']['Field']['#text'], "42")
+
+
+def test_entity_link_label():
+    entity = TRX.MaltegoEntity()
+    label = "Test Label"
+    entity.setLinkLabel(label)
+    out = xmltodict.parse(entity.returnEntity())
+    assert_equal(entity.additionalFields['link#maltego.link.label'].value, label)
+    assert_equal(out['Entity']['AdditionalFields']['Field']['#text'], label)
+
+
 def test_transform_creation():
     xform = TRX.MaltegoTransform()
     assert_is_instance(xform, TRX.MaltegoTransform)
