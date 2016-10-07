@@ -50,6 +50,25 @@ def test_entity_set_value():
     entity = TRX.MaltegoEntity()
     entity.setValue("Maltego")
     assert_equal(entity.value, "Maltego")
+    out = xmltodict.parse(entity.returnEntity())
+    assert_equal(out['Entity']['Value'], "Maltego")
+
+
+def test_entity_weight():
+    entity = TRX.MaltegoEntity()
+    entity.setWeight(100)
+    assert_equal(entity.weight, 100)
+    out = xmltodict.parse(entity.returnEntity())
+    assert_equal(out['Entity']['Weight'], "100")
+
+
+def test_entity_iconurl():
+    entity = TRX.MaltegoEntity()
+    url = "http://cdn.slidesharecdn.com/profile-photo-VerisignInc-48x48.jpg"
+    entity.setIconURL(url)
+    assert_equal(entity.iconURL, url)
+    out = xmltodict.parse(entity.returnEntity())
+    assert_equal(out['Entity']['IconURL'], url)
 
 
 def test_entity_property_count():
