@@ -5,6 +5,7 @@ import unittest
 import xmltodict
 from nose.tools import assert_equal
 from nose.tools import assert_is_instance
+from nose.tools import assert_is_none
 from TRX import TRX
 
 
@@ -220,3 +221,21 @@ class TestMaltegoMsg(unittest.TestCase):
     def test_msg_entity(self):
         m = TRX.MaltegoMsg(self.m_xml)
         assert_is_instance(m, TRX.MaltegoMsg)
+
+    def test_msg_meta(self):
+        m = TRX.MaltegoMsg(self.m_xml)
+        assert_equal(m.Value, "127.0.0.1")
+        assert_equal(m.Weight, "100")
+        assert_equal(m.Slider, 50)
+        assert_equal(m.Type, "IPAddress")
+
+    def test_msg_property(self):
+        m = TRX.MaltegoMsg(self.m_xml)
+        assert_equal(m.getProperty('ipv4-address'), "127.0.0.1")
+        assert_equal(m.getProperty('ipaddress.internal'), "true")
+        assert_is_none(m.getProperty('nope'))
+
+    def test_msg_setting(self):
+        m = TRX.MaltegoMsg(self.m_xml)
+        assert_equal(m.getTransformSetting("api"), "JUSTKIDDING")
+        assert_is_none(m.getTransformSetting("nope"))
