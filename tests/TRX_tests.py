@@ -234,3 +234,8 @@ def test_transform_exception_result():
     e_data = xmltodict.parse(xform.throwExceptions())
     assert_is_instance(e_data, dict)
     assert_equal(e_data['MaltegoMessage']['MaltegoTransformExceptionMessage']['Exceptions']['Exception'], "Test Exception")
+
+
+def test_msg_creation():
+    m = TRX.MaltegoMsg()
+    assert_is_instance(m, TRX.MaltegoMsg)
