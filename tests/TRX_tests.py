@@ -1,13 +1,11 @@
 # -*- coding: utf-8 -*-
 
+import unittest
+
 import xmltodict
 from nose.tools import assert_equal
 from nose.tools import assert_is_instance
 from TRX import TRX
-
-
-def setup():
-    print "SETUP!"
 
 
 def teardown():
@@ -239,3 +237,34 @@ def test_transform_exception_result():
 def test_msg_creation():
     m = TRX.MaltegoMsg()
     assert_is_instance(m, TRX.MaltegoMsg)
+
+
+class TestMaltegoMsg(unittest.TestCase):
+
+    @classmethod
+    def setUpClass(self):
+        self.m_xml = ""
+        self.m_data = {}
+        self.m_data['MaltegoMessage'] = {}
+        self.m_data['MaltegoMessage']['MaltegoTransformRequestMessage'] = {}
+        self.m_data['MaltegoMessage']['MaltegoTransformRequestMessage']['Entities'] = {}
+        self.m_data['MaltegoMessage']['MaltegoTransformRequestMessage']['Limits'] = {}
+        self.m_data['MaltegoMessage']['MaltegoTransformRequestMessage']['Limits']["@HardLimit"] = 50
+        self.m_data['MaltegoMessage']['MaltegoTransformRequestMessage']['Limits']["@SoftLimit"] = 50
+        self.m_data['MaltegoMessage']['MaltegoTransformRequestMessage']['TransformFields'] = {}
+        self.m_data['MaltegoMessage']['MaltegoTransformRequestMessage']['TransformFields']['Field'] = []
+        self.m_data['MaltegoMessage']['MaltegoTransformRequestMessage']['TransformFields']['Field'].append({"@Name": "api", "#text": "JUSTKIDDING"})
+        ent_data = {}
+        ent_data['@Type'] = "IPAddress"
+        ent_data['Value'] = "127.0.0.1"
+        ent_data['Weight'] = "100"
+        ent_data['AdditionalFields'] = {}
+        ent_data['AdditionalFields']['Field'] = []
+        ent_data['AdditionalFields']['Field'].append({"@Name": "ipv4-address", "@DisplayName": "IP Address", "#text": "127.0.0.1"})
+        ent_data['AdditionalFields']['Field'].append({"@Name": "ipaddress.internal", "@DisplayName": "Internal", "#text": "true"})
+        self.m_data['MaltegoMessage']['MaltegoTransformRequestMessage']['Entities']['Entity'] = ent_data
+        self.m_xml = xmltodict.unparse(self.m_data)
+
+    def test_msg_entity(self):
+        m = TRX.MaltegoMsg(self.m_xml)
+        assert_is_instance(m, TRX.MaltegoMsg)
