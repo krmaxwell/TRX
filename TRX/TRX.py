@@ -222,9 +222,6 @@ class MaltegoMsg:
     def __init__(self, MaltegoXML=""):
         """Parse XML received from Maltego."""
 
-        if MaltegoXML == "":
-            return
-
         xmldoc = minidom.parseString(MaltegoXML)
 
         # read the easy stuff like value, limits etc
