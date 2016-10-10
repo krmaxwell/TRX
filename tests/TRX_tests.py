@@ -8,10 +8,6 @@ from nose.tools import assert_is_instance
 from TRX import TRX
 
 
-def teardown():
-    print "TEAR DOWN!"
-
-
 def test_entity_creation():
     entity = TRX.MaltegoEntity()
     assert_is_instance(entity, TRX.MaltegoEntity)
@@ -177,66 +173,42 @@ def test_entity_strict():
     assert_equal(out['Entity']['AdditionalFields']['Field']['@MatchingRule'], 'strict')
 
 
-def test_transform_creation():
-    xform = TRX.MaltegoTransform()
-    assert_is_instance(xform, TRX.MaltegoTransform)
+class TestMaltegoTransform(unittest.TestCase):
 
+    @classmethod
+    def setUpClass(self):
+        self.xform = TRX.MaltegoTransform()
 
-def test_transform_add_entity():
-    xform = TRX.MaltegoTransform()
-    entity = xform.addEntity()
-    assert_is_instance(entity, TRX.MaltegoEntity)
-    assert_is_instance(xform.returnOutput(), unicode)
+    def test_transform_creation(self):
+        assert_is_instance(self.xform, TRX.MaltegoTransform)
 
+    def test_transform_add_entity(self):
+        entity = self.xform.addEntity()
+        assert_is_instance(entity, TRX.MaltegoEntity)
+        assert_is_instance(self.xform.returnOutput(), unicode)
 
-def test_transform_add_exception():
-    xform = TRX.MaltegoTransform()
-    xform.addException("Test Exception")
-    assert_equal(len(xform.exceptions), 1)
-    assert_equal(xform.exceptions[0], "Test Exception")
+    def test_transform_uimsg_count(self):
+        self.xform.addUIMessage("Test Message", TRX.UIM_DEBUG)
+        assert_equal(len(self.xform.UIMessages), 1)
+        assert_is_instance(self.xform.UIMessages[0], TRX.UIMessage)
 
+    def test_transform_uimsg_dict(self):
+        self.xform.addUIMessage("Test Message", TRX.UIM_DEBUG)
+        assert_equal(self.xform.UIMessages[0].messageType, 'Debug')
+        assert_equal(self.xform.UIMessages[0].message, "Test Message")
 
-def test_transform_uimsg_count():
-    xform = TRX.MaltegoTransform()
-    xform.addUIMessage("Test Message", TRX.UIM_DEBUG)
-    assert_equal(len(xform.UIMessages), 1)
-    assert_is_instance(xform.UIMessages[0], TRX.UIMessage)
+    def test_transform_uimsg_result(self):
+        self.xform.addUIMessage("Test Message", TRX.UIM_DEBUG)
+        out = xmltodict.parse(self.xform.returnOutput())
+        assert_is_instance(out, dict)
+        assert_equal(out['MaltegoMessage']['MaltegoTransformResponseMessage']['UIMessages']['UIMessage'][0]['@MessageType'], 'Debug')
+        assert_equal(out['MaltegoMessage']['MaltegoTransformResponseMessage']['UIMessages']['UIMessage'][0]['#text'], 'Test Message')
 
-
-def test_transform_uimsg_dict():
-    xform = TRX.MaltegoTransform()
-    xform.addUIMessage("Test Message", TRX.UIM_DEBUG)
-    assert_equal(xform.UIMessages[0].messageType, 'Debug')
-    assert_equal(xform.UIMessages[0].message, "Test Message")
-
-
-def test_transform_uimsg_result():
-    xform = TRX.MaltegoTransform()
-    xform.addUIMessage("Test Message", TRX.UIM_DEBUG)
-    out = xmltodict.parse(xform.returnOutput())
-    assert_is_instance(out, dict)
-    assert_equal(out['MaltegoMessage']['MaltegoTransformResponseMessage']['UIMessages']['UIMessage']['@MessageType'], 'Debug')
-    assert_equal(out['MaltegoMessage']['MaltegoTransformResponseMessage']['UIMessages']['UIMessage']['#text'], 'Test Message')
-
-
-def test_transform_exception_str():
-    xform = TRX.MaltegoTransform()
-    xform.addException("Test Exception")
-    e = xform.throwExceptions()
-    assert_is_instance(e, str)
-
-
-def test_transform_exception_result():
-    xform = TRX.MaltegoTransform()
-    xform.addException("Test Exception")
-    e_data = xmltodict.parse(xform.throwExceptions())
-    assert_is_instance(e_data, dict)
-    assert_equal(e_data['MaltegoMessage']['MaltegoTransformExceptionMessage']['Exceptions']['Exception'], "Test Exception")
-
-
-def test_msg_creation():
-    m = TRX.MaltegoMsg()
-    assert_is_instance(m, TRX.MaltegoMsg)
+    def test_transform_exception_result(self):
+        self.xform.addException("Test Exception")
+        e_data = xmltodict.parse(self.xform.throwExceptions())
+        assert_is_instance(e_data, dict)
+        assert_equal(e_data['MaltegoMessage']['MaltegoTransformExceptionMessage']['Exceptions']['Exception'], "Test Exception")
 
 
 class TestMaltegoMsg(unittest.TestCase):
